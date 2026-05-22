@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
+import { Card, CardContent } from "@/components/ui/card"
 
 const testimonials = [
   {
@@ -142,27 +143,29 @@ export function TestimonialsSection() {
               style={{ scrollBehavior: "auto" }}
             >
               {duplicatedTestimonials.map((testimonial, index) => (
-                <div
+                <Card
                   key={index}
-                  className="flex-shrink-0 w-full sm:w-[400px] bg-card border border-border rounded-2xl p-8 border-none py-4"
+                  className="flex-shrink-0 w-full sm:w-[400px] rounded-2xl border-none shadow-none"
                 >
-                  <div className="flex items-start gap-4 mb-6">
-                    <Image
-                      src={testimonial.avatar || "/placeholder.svg"}
-                      alt={testimonial.name}
-                      width={48}
-                      height={48}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <p className="text-foreground leading-relaxed flex-1 text-lg">
-                      &ldquo;{testimonial.content}&rdquo;
-                    </p>
-                  </div>
-                  <div className="mt-auto">
-                    <p className="text-foreground text-sm font-bold">{testimonial.name}</p>
-                    <p className="text-muted-foreground text-xs">{testimonial.role}</p>
-                  </div>
-                </div>
+                  <CardContent className="p-8 py-4 flex flex-col h-full">
+                    <div className="flex items-start gap-4 mb-6">
+                      <Image
+                        src={testimonial.avatar || "/placeholder.svg"}
+                        alt={testimonial.name}
+                        width={48}
+                        height={48}
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                      <p className="text-foreground leading-relaxed flex-1 text-lg">
+                        &ldquo;{testimonial.content}&rdquo;
+                      </p>
+                    </div>
+                    <div className="mt-auto">
+                      <p className="text-foreground text-sm font-bold">{testimonial.name}</p>
+                      <p className="text-muted-foreground text-xs">{testimonial.role}</p>
+                    </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
@@ -182,27 +185,29 @@ export function TestimonialsSection() {
               style={{ scrollBehavior: "auto" }}
             >
               {duplicatedTestimonials2.map((testimonial, index) => (
-                <div
+                <Card
                   key={index}
-                  className="flex-shrink-0 w-full sm:w-[400px] bg-card border border-border rounded-2xl p-8 border-none py-4"
+                  className="flex-shrink-0 w-full sm:w-[400px] rounded-2xl border-none shadow-none"
                 >
-                  <div className="flex items-start gap-4 mb-6">
-                    <Image
-                      src={testimonial.avatar || "/placeholder.svg"}
-                      alt={testimonial.name}
-                      width={48}
-                      height={48}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <p className="text-lg text-foreground leading-relaxed flex-1">
-                      &ldquo;{testimonial.content}&rdquo;
-                    </p>
-                  </div>
-                  <div className="mt-auto">
-                    <p className="text-foreground text-sm font-bold">{testimonial.name}</p>
-                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                  </div>
-                </div>
+                  <CardContent className="p-8 py-4 flex flex-col h-full">
+                    <div className="flex items-start gap-4 mb-6">
+                      <Image
+                        src={testimonial.avatar || "/placeholder.svg"}
+                        alt={testimonial.name}
+                        width={48}
+                        height={48}
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                      <p className="text-lg text-foreground leading-relaxed flex-1">
+                        &ldquo;{testimonial.content}&rdquo;
+                      </p>
+                    </div>
+                    <div className="mt-auto">
+                      <p className="text-foreground text-sm font-bold">{testimonial.name}</p>
+                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                    </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>

@@ -1,5 +1,7 @@
 import { ArrowUpRight, ArrowRight, FileEdit } from "lucide-react"
 import Image from "next/image"
+import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 
 const articles = [
   {
@@ -34,39 +36,40 @@ export function BlogSection() {
 
         <div className="grid md:grid-cols-2 gap-6 mb-12">
           {articles.map((article, index) => (
-            <div key={index} className="group cursor-pointer">
-              <div className="bg-card rounded-2xl overflow-hidden border border-border mb-4 aspect-[4/3] relative">
-                <Image
-                  src={article.image || "/public/images/watch-hand.png"}
-                  alt={article.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <h3 className="text-foreground mb-3 group-hover:opacity-80 transition-opacity text-lg">
-                {article.title}
-              </h3>
-              <div className="flex items-center gap-4">
-                <span className="px-3 py-1 border border-border rounded-full text-xs text-foreground">
-                  {article.category}
-                </span>
-                <span className="text-sm text-muted-foreground">{article.date}</span>
-              </div>
-            </div>
+            <Card key={index} className="group cursor-pointer border-0 shadow-none bg-transparent">
+              <CardContent className="p-0">
+                <div className="bg-card rounded-2xl overflow-hidden border border-border mb-4 aspect-[4/3] relative">
+                  <Image
+                    src={article.image || "/public/images/watch-hand.png"}
+                    alt={article.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+                <h3 className="text-foreground mb-3 group-hover:text-primary transition-colors text-lg font-medium">
+                  {article.title}
+                </h3>
+                <div className="flex items-center gap-4">
+                  <span className="px-3 py-1 border border-border rounded-full text-xs text-foreground">
+                    {article.category}
+                  </span>
+                  <span className="text-sm text-muted-foreground">{article.date}</span>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
 
         <div className="flex justify-center">
-          <button className="relative flex items-center gap-0 border border-border rounded-full pl-6 pr-1.5 py-1.5 transition-all duration-300 group overflow-hidden">
-            <span className="absolute inset-0 bg-foreground rounded-full scale-x-0 origin-right group-hover:scale-x-100 transition-transform duration-300" />
-            <span className="text-sm text-foreground group-hover:text-background pr-4 uppercase tracking-wide relative z-10 transition-colors duration-300">
+          <Button variant="outline" className="rounded-full pl-6 pr-2 py-6 group hover:bg-foreground hover:text-background transition-colors duration-300">
+            <span className="text-sm uppercase tracking-wide mr-2">
               Browse all articles
             </span>
-            <span className="w-10 h-10 rounded-full flex items-center justify-center relative z-10">
-              <ArrowRight className="w-4 h-4 text-foreground group-hover:opacity-0 absolute transition-opacity duration-300" />
-              <ArrowUpRight className="w-4 h-4 text-foreground group-hover:text-background opacity-0 group-hover:opacity-100 transition-all duration-300" />
+            <span className="w-8 h-8 rounded-full flex items-center justify-center relative">
+              <ArrowRight className="w-4 h-4 absolute transition-opacity duration-300 group-hover:opacity-0" />
+              <ArrowUpRight className="w-4 h-4 absolute opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
             </span>
-          </button>
+          </Button>
         </div>
       </div>
     </section>
