@@ -2,16 +2,28 @@
 
 import type React from "react"
 import { useState } from "react"
-import { Menu, X, ArrowUpRight, ArrowRight } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { Menu, X, ShoppingBag } from "lucide-react"
+import Link from "next/link"
+import { useCart } from "@/context/cart-context"
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
+  const router = useRouter()
   const isScrolled = true
+  const { itemCount } = useCart()
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault()
-    const element = document.getElementById(targetId)
+    setIsOpen(false)
 
+    // If not on the home page, navigate there first with the hash
+    if (window.location.pathname !== "/") {
+      router.push(`/#${targetId}`)
+      return
+    }
+
+    const element = document.getElementById(targetId)
     if (element) {
       const headerOffset = 100
       const elementPosition = element.getBoundingClientRect().top + window.scrollY
@@ -21,16 +33,12 @@ export function Header() {
         top: offsetPosition,
         behavior: "smooth",
       })
-      setIsOpen(false)
     }
   }
 
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    })
+    router.push("/")
   }
 
   return (
@@ -68,74 +76,44 @@ export function Header() {
             >
               New Arrivals
             </a>
-            <a
-              href="#categories"
-              onClick={(e) => handleSmoothScroll(e, "categories")}
-              className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-                }`}
-            >
-              Categories
-            </a>
-            <a
-              href="#curated"
-              onClick={(e) => handleSmoothScroll(e, "curated")}
+            <Link
+              href="/shop"
               className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
             >
               Shop
-            </a>
-            <a
-              href="#about"
-              onClick={(e) => handleSmoothScroll(e, "about")}
+            </Link>
+            <Link
+              href="/about"
               className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
             >
               About
-            </a>
-            <a
-              href="#contact"
-              onClick={(e) => handleSmoothScroll(e, "contact")}
+            </Link>
+            <Link
+              href="/contact"
               className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
             >
               Contact
-            </a>
+            </Link>
           </nav>
 
+          {/* Desktop cart icon */}
           <div className="hidden md:flex items-center gap-1">
-            <button
-              className={`relative flex items-center gap-0 border rounded-full pl-5 pr-1 py-1 transition-all duration-300 group overflow-hidden ${isScrolled ? "border-zinc-300" : "border-border"
-                }`}
-            >
-              <span
-                className={`absolute inset-0 rounded-full scale-x-0 origin-right group-hover:scale-x-100 transition-transform duration-300 ${isScrolled ? "bg-black" : "bg-foreground"
-                  }`}
-              />
-              <span
-                className={`text-sm pr-3 relative z-10 transition-colors duration-300 ${isScrolled ? "text-black group-hover:text-white" : "text-foreground group-hover:text-background"
-                  }`}
-              >
-                Shop Now
-              </span>
-              <span className="w-8 h-8 rounded-full flex items-center justify-center relative z-10">
-                <ArrowRight
-                  className={`w-4 h-4 group-hover:opacity-0 absolute transition-opacity duration-300 ${isScrolled ? "text-black" : "text-foreground"
-                    }`}
-                />
-                <ArrowUpRight
-                  className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-300 ${isScrolled ? "text-black group-hover:text-white" : "text-foreground group-hover:text-background"
-                    }`}
-                />
-              </span>
-            </button>
+            <CartButton itemCount={itemCount} isScrolled={isScrolled} />
           </div>
 
-          <button
-            className={`md:hidden transition-colors duration-300 ${isScrolled ? "text-black" : "text-foreground"}`}
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile: cart + hamburger */}
+          <div className="flex md:hidden items-center gap-3">
+            <CartButton itemCount={itemCount} isScrolled={isScrolled} />
+            <button
+              className={`transition-colors duration-300 ${isScrolled ? "text-black" : "text-foreground"}`}
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {isOpen && (
@@ -151,70 +129,73 @@ export function Header() {
             >
               New Arrivals
             </a>
-            <a
-              href="#categories"
-              onClick={(e) => handleSmoothScroll(e, "categories")}
+            <Link
+              href="/shop"
               className={`transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
-            >
-              Categories
-            </a>
-            <a
-              href="#curated"
-              onClick={(e) => handleSmoothScroll(e, "curated")}
-              className={`transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-                }`}
+              onClick={() => setIsOpen(false)}
             >
               Shop
-            </a>
-            <a
-              href="#about"
-              onClick={(e) => handleSmoothScroll(e, "about")}
+            </Link>
+            <Link
+              href="/about"
               className={`transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
+              onClick={() => setIsOpen(false)}
             >
               About
-            </a>
-            <a
-              href="#contact"
-              onClick={(e) => handleSmoothScroll(e, "contact")}
+            </Link>
+            <Link
+              href="/contact"
               className={`transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
+              onClick={() => setIsOpen(false)}
             >
               Contact
-            </a>
-            <div
-              className={`flex flex-col gap-3 mt-4 pt-4 border-t ${isScrolled ? "border-zinc-200" : "border-border"}`}
-            >
-              <button
-                className={`relative flex items-center gap-0 border rounded-full pl-5 pr-1 py-1 w-fit transition-all duration-300 group overflow-hidden ${isScrolled ? "border-zinc-300" : "border-border"
-                  }`}
-              >
-                <span
-                  className={`absolute inset-0 rounded-full scale-x-0 origin-right group-hover:scale-x-100 transition-transform duration-300 ${isScrolled ? "bg-black" : "bg-foreground"
-                    }`}
-                />
-                <span
-                  className={`text-sm pr-3 relative z-10 transition-colors duration-300 ${isScrolled ? "text-black group-hover:text-white" : "text-foreground group-hover:text-background"
-                    }`}
-                >
-                  Shop Now
-                </span>
-                <span className="w-8 h-8 rounded-full flex items-center justify-center relative z-10">
-                  <ArrowRight
-                    className={`w-4 h-4 group-hover:opacity-0 absolute transition-opacity duration-300 ${isScrolled ? "text-black" : "text-foreground"
-                      }`}
-                  />
-                  <ArrowUpRight
-                    className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-300 ${isScrolled ? "text-black group-hover:text-white" : "text-foreground group-hover:text-background"
-                      }`}
-                  />
-                </span>
-              </button>
-            </div>
+            </Link>
           </nav>
         )}
       </div>
     </header>
+  )
+}
+
+// ─── Cart Button ──────────────────────────────────────────────────────────────
+
+function CartButton({
+  itemCount,
+  isScrolled,
+}: {
+  itemCount: number
+  isScrolled: boolean
+}) {
+  return (
+    <Link
+      href="/cart"
+      aria-label={`Cart – ${itemCount} item${itemCount !== 1 ? "s" : ""}`}
+      className={`relative group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 ${
+        isScrolled
+          ? "text-zinc-700 hover:text-black hover:bg-zinc-100"
+          : "text-foreground hover:bg-foreground/10"
+      }`}
+    >
+      <ShoppingBag className="w-5 h-5" />
+
+      {/* Badge */}
+      {itemCount > 0 && (
+        <span
+          className={`
+            absolute -top-0.5 -right-0.5
+            min-w-[18px] h-[18px] px-1
+            flex items-center justify-center
+            rounded-full text-[10px] font-semibold leading-none
+            bg-black text-white
+            animate-in zoom-in-75 duration-200
+          `}
+        >
+          {itemCount > 99 ? "99+" : itemCount}
+        </span>
+      )}
+    </Link>
   )
 }
