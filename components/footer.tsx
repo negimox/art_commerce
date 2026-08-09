@@ -9,10 +9,10 @@ const footerLinks = {
     { label: "Custom Orders", href: "#" },
   ],
   company: [
-    { label: "About Us", href: "#" },
-    { label: "Our Story", href: "#" },
+    { label: "About Us", href: "/about" },
+    { label: "Our Story", href: "/about" },
     { label: "Blog", href: "#" },
-    { label: "Contact", href: "#" },
+    { label: "Contact", href: "/contact" },
   ],
   legal: [
     { label: "Terms", href: "#" },
