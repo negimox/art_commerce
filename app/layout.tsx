@@ -9,7 +9,7 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] })
 const _playfair = Playfair_Display({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Himflora",
+  title: "HimFlora | Made for your home",
   description: "Nature's art, brought home. Discover and shop our collection of customizable, handcrafted artworks."
 }
 
