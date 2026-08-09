@@ -2,10 +2,13 @@
 
 import type React from "react"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Menu, X, ArrowUpRight, ArrowRight } from "lucide-react"
+import Link from "next/link"
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
+  const router = useRouter()
   const isScrolled = true
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
@@ -27,10 +30,7 @@ export function Header() {
 
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    })
+    router.push("/")
   }
 
   return (
@@ -76,30 +76,27 @@ export function Header() {
             >
               Categories
             </a>
-            <a
-              href="#curated"
-              onClick={(e) => handleSmoothScroll(e, "curated")}
+            <Link
+              href="/shop"
               className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
             >
               Shop
-            </a>
-            <a
-              href="#about"
-              onClick={(e) => handleSmoothScroll(e, "about")}
+            </Link>
+            <Link
+              href="/about"
               className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
             >
               About
-            </a>
-            <a
-              href="#contact"
-              onClick={(e) => handleSmoothScroll(e, "contact")}
+            </Link>
+            <Link
+              href="/contact"
               className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
             >
               Contact
-            </a>
+            </Link>
           </nav>
 
           <div className="hidden md:flex items-center gap-1">
@@ -159,30 +156,29 @@ export function Header() {
             >
               Categories
             </a>
-            <a
-              href="#curated"
-              onClick={(e) => handleSmoothScroll(e, "curated")}
+            <Link
+              href="/shop"
               className={`transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
             >
               Shop
-            </a>
-            <a
-              href="#about"
-              onClick={(e) => handleSmoothScroll(e, "about")}
+            </Link>
+            <Link
+              href="/about"
               className={`transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
+              onClick={() => setIsOpen(false)}
             >
               About
-            </a>
-            <a
-              href="#contact"
-              onClick={(e) => handleSmoothScroll(e, "contact")}
+            </Link>
+            <Link
+              href="/contact"
               className={`transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
+              onClick={() => setIsOpen(false)}
             >
               Contact
-            </a>
+            </Link>
             <div
               className={`flex flex-col gap-3 mt-4 pt-4 border-t ${isScrolled ? "border-zinc-200" : "border-border"}`}
             >
