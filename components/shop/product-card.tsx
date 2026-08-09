@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Heart, ShoppingCart, Eye, Check } from "lucide-react"
 import type { ShopProduct } from "@/lib/shop-data"
 import { useCart } from "@/context/cart-context"
@@ -12,11 +13,12 @@ interface ProductCardProps {
 
 export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
   const [isWishlisted, setIsWishlisted] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
   const [added, setAdded] = useState(false)
   const { addItem } = useCart()
 
-  function handleAddToCart() {
+  function handleAddToCart(e: React.MouseEvent) {
+    e.preventDefault()
+    e.stopPropagation()
     addItem({
       id: product.id,
       name: product.title,
@@ -27,12 +29,17 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
     setTimeout(() => setAdded(false), 1500)
   }
 
+  function handleWishlist(e: React.MouseEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsWishlisted((w) => !w)
+  }
+
   if (viewMode === "list") {
     return (
-      <div
+      <Link
+        href={`/product/${product.id}`}
         className="group flex gap-5 bg-white border border-zinc-100 rounded-xl overflow-hidden hover:shadow-md transition-all duration-300 hover:border-zinc-200"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
       >
         {/* Image */}
         <div className="relative w-44 min-h-[140px] flex-shrink-0 overflow-hidden bg-zinc-50">
@@ -70,9 +77,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
             <button
               onClick={handleAddToCart}
               className={`flex items-center gap-1.5 text-white text-xs px-3 py-1.5 rounded-full transition-all duration-300 ${
-                added
-                  ? "bg-emerald-500"
-                  : "bg-[#4a3728] hover:bg-[#3a2718]"
+                added ? "bg-emerald-500" : "bg-[#4a3728] hover:bg-[#3a2718]"
               }`}
             >
               {added ? <Check className="w-3 h-3" /> : <ShoppingCart className="w-3 h-3" />}
@@ -80,18 +85,14 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
             </button>
           </div>
         </div>
-      </div>
+      </Link>
     )
   }
 
   return (
-    <div
-      className="group relative bg-white border border-zinc-100 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:border-zinc-200"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Image container */}
-      <div className="relative overflow-hidden aspect-[4/3] bg-zinc-50">
+    <div className="group relative bg-white border border-zinc-100 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:border-zinc-200">
+      {/* Clickable image → product page */}
+      <Link href={`/product/${product.id}`} className="block relative overflow-hidden aspect-[4/3] bg-zinc-50">
         <img
           src={product.image}
           alt={product.title}
@@ -107,7 +108,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
 
         {/* Wishlist button */}
         <button
-          onClick={() => setIsWishlisted(!isWishlisted)}
+          onClick={handleWishlist}
           className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-white shadow-sm"
           aria-label="Add to wishlist"
         >
@@ -117,9 +118,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
         </button>
 
         {/* Hover action overlay */}
-        <div
-          className={`absolute inset-x-0 bottom-0 flex gap-2 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300`}
-        >
+        <div className="absolute inset-x-0 bottom-0 flex gap-2 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
           <button
             onClick={handleAddToCart}
             className={`flex-1 flex items-center justify-center gap-1.5 text-white text-xs py-2 rounded-lg transition-all duration-300 shadow-md ${
@@ -129,14 +128,18 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
             {added ? <Check className="w-3.5 h-3.5" /> : <ShoppingCart className="w-3.5 h-3.5" />}
             {added ? "Added!" : "Add to Cart"}
           </button>
-          <button className="w-9 h-9 flex items-center justify-center bg-white text-zinc-700 rounded-lg hover:bg-zinc-100 transition-colors shadow-md flex-shrink-0">
+          <Link
+            href={`/product/${product.id}`}
+            onClick={(e) => e.stopPropagation()}
+            className="w-9 h-9 flex items-center justify-center bg-white text-zinc-700 rounded-lg hover:bg-zinc-100 transition-colors shadow-md flex-shrink-0"
+          >
             <Eye className="w-4 h-4" />
-          </button>
+          </Link>
         </div>
-      </div>
+      </Link>
 
       {/* Product info */}
-      <div className="p-3">
+      <Link href={`/product/${product.id}`} className="block p-3">
         <span className="text-[10px] text-zinc-400 uppercase tracking-widest font-medium mb-1 block">
           {product.category}
         </span>
@@ -144,12 +147,8 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
           {product.title}
         </h3>
 
-        {/* Price row — clicking also adds to cart */}
-        <div
-          className="mt-2 flex items-center gap-2 flex-wrap cursor-pointer"
-          onClick={handleAddToCart}
-          title="Click to add to cart"
-        >
+        {/* Price row */}
+        <div className="mt-2 flex items-center gap-2 flex-wrap">
           <span className="text-sm font-bold text-zinc-900">₹{product.price.toLocaleString()}</span>
           {product.originalPrice && (
             <>
@@ -162,7 +161,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
             </>
           )}
         </div>
-      </div>
+      </Link>
     </div>
   )
 }
