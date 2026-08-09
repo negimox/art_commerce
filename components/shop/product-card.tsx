@@ -1,8 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { Heart, ShoppingCart, Eye } from "lucide-react"
+import { Heart, ShoppingCart, Eye, Check } from "lucide-react"
 import type { ShopProduct } from "@/lib/shop-data"
+import { useCart } from "@/context/cart-context"
 
 interface ProductCardProps {
   product: ShopProduct
@@ -12,6 +13,19 @@ interface ProductCardProps {
 export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
   const [isWishlisted, setIsWishlisted] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
+  const [added, setAdded] = useState(false)
+  const { addItem } = useCart()
+
+  function handleAddToCart() {
+    addItem({
+      id: product.id,
+      name: product.title,
+      price: product.price,
+      image: product.image,
+    })
+    setAdded(true)
+    setTimeout(() => setAdded(false), 1500)
+  }
 
   if (viewMode === "list") {
     return (
@@ -53,9 +67,16 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
                 </span>
               )}
             </div>
-            <button className="flex items-center gap-1.5 bg-[#4a3728] text-white text-xs px-3 py-1.5 rounded-full hover:bg-[#3a2718] transition-colors">
-              <ShoppingCart className="w-3 h-3" />
-              Add
+            <button
+              onClick={handleAddToCart}
+              className={`flex items-center gap-1.5 text-white text-xs px-3 py-1.5 rounded-full transition-all duration-300 ${
+                added
+                  ? "bg-emerald-500"
+                  : "bg-[#4a3728] hover:bg-[#3a2718]"
+              }`}
+            >
+              {added ? <Check className="w-3 h-3" /> : <ShoppingCart className="w-3 h-3" />}
+              {added ? "Added!" : "Add"}
             </button>
           </div>
         </div>
@@ -99,9 +120,14 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
         <div
           className={`absolute inset-x-0 bottom-0 flex gap-2 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300`}
         >
-          <button className="flex-1 flex items-center justify-center gap-1.5 bg-[#4a3728] text-white text-xs py-2 rounded-lg hover:bg-[#3a2718] transition-colors shadow-md">
-            <ShoppingCart className="w-3.5 h-3.5" />
-            Add to Cart
+          <button
+            onClick={handleAddToCart}
+            className={`flex-1 flex items-center justify-center gap-1.5 text-white text-xs py-2 rounded-lg transition-all duration-300 shadow-md ${
+              added ? "bg-emerald-500" : "bg-[#4a3728] hover:bg-[#3a2718]"
+            }`}
+          >
+            {added ? <Check className="w-3.5 h-3.5" /> : <ShoppingCart className="w-3.5 h-3.5" />}
+            {added ? "Added!" : "Add to Cart"}
           </button>
           <button className="w-9 h-9 flex items-center justify-center bg-white text-zinc-700 rounded-lg hover:bg-zinc-100 transition-colors shadow-md flex-shrink-0">
             <Eye className="w-4 h-4" />
@@ -118,8 +144,12 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
           {product.title}
         </h3>
 
-        {/* Price row */}
-        <div className="mt-2 flex items-center gap-2 flex-wrap">
+        {/* Price row — clicking also adds to cart */}
+        <div
+          className="mt-2 flex items-center gap-2 flex-wrap cursor-pointer"
+          onClick={handleAddToCart}
+          title="Click to add to cart"
+        >
           <span className="text-sm font-bold text-zinc-900">₹{product.price.toLocaleString()}</span>
           {product.originalPrice && (
             <>
