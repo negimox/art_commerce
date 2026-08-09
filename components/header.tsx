@@ -15,8 +15,15 @@ export function Header() {
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault()
-    const element = document.getElementById(targetId)
+    setIsOpen(false)
 
+    // If not on the home page, navigate there first with the hash
+    if (window.location.pathname !== "/") {
+      router.push(`/#${targetId}`)
+      return
+    }
+
+    const element = document.getElementById(targetId)
     if (element) {
       const headerOffset = 100
       const elementPosition = element.getBoundingClientRect().top + window.scrollY
@@ -26,7 +33,6 @@ export function Header() {
         top: offsetPosition,
         behavior: "smooth",
       })
-      setIsOpen(false)
     }
   }
 
@@ -69,14 +75,6 @@ export function Header() {
                 }`}
             >
               New Arrivals
-            </a>
-            <a
-              href="#categories"
-              onClick={(e) => handleSmoothScroll(e, "categories")}
-              className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-                }`}
-            >
-              Categories
             </a>
             <Link
               href="/shop"
@@ -130,14 +128,6 @@ export function Header() {
                 }`}
             >
               New Arrivals
-            </a>
-            <a
-              href="#categories"
-              onClick={(e) => handleSmoothScroll(e, "categories")}
-              className={`transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-                }`}
-            >
-              Categories
             </a>
             <Link
               href="/shop"
