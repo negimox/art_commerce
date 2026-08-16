@@ -2,19 +2,31 @@ import type { Metadata } from "next"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ShopView } from "@/components/shop/shop-view"
+import { getShopProducts, getShopCategories, getPriceRanges } from "@/lib/supabase/queries"
 
 export const metadata: Metadata = {
-  title: "Shop – Kitchen and Dining | Himflora",
+  title: "Shop – Handmade Home Decor | Himflora",
   description:
-    "Explore our curated collection of handcrafted kitchen and dining essentials — from brass and copper glasses to terracotta bottles and mugs.",
+    "Explore our curated collection of handcrafted home decor items.",
 }
 
-export default function ShopPage() {
+export default async function ShopPage() {
+  const [initialProducts, shopCategories, priceRanges] = await Promise.all([
+    getShopProducts(),
+    getShopCategories(),
+    getPriceRanges(),
+  ])
+
   return (
     <main className="min-h-screen bg-background">
       <Header />
       <div className="pt-24">
-        <ShopView category="Kitchen and Dining" />
+        <ShopView
+          category="Handmade Nature Frames"
+          initialProducts={initialProducts}
+          shopCategories={shopCategories}
+          priceRanges={priceRanges}
+        />
       </div>
       <Footer />
     </main>

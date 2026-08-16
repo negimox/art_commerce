@@ -1,8 +1,12 @@
 "use client"
-import { artworks } from "@/lib/artworks"
+import type { Artwork } from "@/lib/supabase/queries"
 import { ArtworkCard } from "@/components/ui/artwork-card"
 
-export function CuratedSection() {
+interface CuratedSectionProps {
+  artworks: Artwork[]
+}
+
+export function CuratedSection({ artworks }: CuratedSectionProps) {
   return (
     <section id="curated" className="py-16 px-6 bg-background">
       <div className="max-w-7xl mx-auto">

@@ -1,5 +1,5 @@
 "use client"
-import { artworks } from "@/lib/artworks"
+import type { Artwork } from "@/lib/supabase/queries"
 import {
   Carousel,
   CarouselContent,
@@ -8,9 +8,12 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 
-const featuredArtworks = artworks.filter((art) => art.featured).slice(0, 3)
+interface NewArrivalsSectionProps {
+  artworks: Artwork[]
+}
 
-export function NewArrivalsSection() {
+export function NewArrivalsSection({ artworks }: NewArrivalsSectionProps) {
+  const featuredArtworks = artworks.filter((art) => art.featured).slice(0, 3)
   return (
     <section id="new-arrivals" className="py-16 px-6 bg-background">
       <div className="max-w-7xl mx-auto">
