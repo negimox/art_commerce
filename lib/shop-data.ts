@@ -25,14 +25,8 @@ export interface ShopCategory {
 }
 
 export const shopCategories: ShopCategory[] = [
-  { name: "Place Mats", count: 56 },
-  { name: "Potholders & Oven Mitts", count: 3 },
-  { name: "Dish Cloths & Towels", count: 2 },
-  { name: "Table Napkins", count: 11 },
-  { name: "Kitchen Utilities", count: 423 },
-  { name: "Table Mats", count: 116 },
-  { name: "Copper Bottle", count: 11 },
-  { name: "Water Bottle", count: 27 },
+  { name: "Wall Decor", count: 56 },
+  { name: "Table Decor", count: 423 },
 ]
 
 export const priceRanges: PriceRange[] = [
@@ -56,7 +50,7 @@ export const shopProducts: ShopProduct[] = [
       "https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_tp6eqetp6eqetp6e%20%282%29%20%281%29.png",
     price: 1700,
     originalPrice: 3400,
-    category: "Kitchen Utilities",
+    category: "Wall Decor",
     discountPercent: 50,
   },
   {
@@ -66,7 +60,7 @@ export const shopProducts: ShopProduct[] = [
       "https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_v79njrv79njrv79n_1%20%281%29.png",
     price: 700,
     originalPrice: 1400,
-    category: "Copper Bottle",
+    category: "Wall Decor",
     discountPercent: 50,
   },
   {
@@ -76,7 +70,7 @@ export const shopProducts: ShopProduct[] = [
       "https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_r29lxnr29lxnr29l%20%281%29.png",
     price: 1700,
     originalPrice: 3400,
-    category: "Kitchen Utilities",
+    category: "Wall Decor",
     discountPercent: 50,
   },
   {
@@ -85,7 +79,7 @@ export const shopProducts: ShopProduct[] = [
     image:
       "https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_797yu7797yu7797y%20%281%29.png",
     price: 420,
-    category: "Water Bottle",
+    category: "Wall Decor",
   },
   {
     id: "sp-5",
@@ -93,7 +87,7 @@ export const shopProducts: ShopProduct[] = [
     image:
       "https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_700uri700uri700u%20%281%29.png",
     price: 380,
-    category: "Water Bottle",
+    category: "Wall Decor",
   },
   {
     id: "sp-6",
@@ -101,7 +95,7 @@ export const shopProducts: ShopProduct[] = [
     image:
       "https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_p9qf5ip9qf5ip9qf%20%281%29.png",
     price: 350,
-    category: "Water Bottle",
+    category: "Wall Decor",
   },
   {
     id: "sp-7",
@@ -109,7 +103,7 @@ export const shopProducts: ShopProduct[] = [
     image:
       "https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_ljo2m6ljo2m6ljo2%20%281%29.png",
     price: 299,
-    category: "Kitchen Utilities",
+    category: "Wall Decor",
   },
   {
     id: "sp-8",
@@ -117,7 +111,7 @@ export const shopProducts: ShopProduct[] = [
     image:
       "https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_au7wv7au7wv7au7w%20%281%29.png",
     price: 249,
-    category: "Kitchen Utilities",
+    category: "Wall Decor",
   },
   {
     id: "sp-9",
@@ -126,7 +120,7 @@ export const shopProducts: ShopProduct[] = [
       "https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_fznjfkfznjfkfznj%20%281%29.png",
     price: 2200,
     originalPrice: 4400,
-    category: "Kitchen Utilities",
+    category: "Wall Decor",
     discountPercent: 50,
   },
   {
@@ -136,7 +130,7 @@ export const shopProducts: ShopProduct[] = [
       "https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_tp6eqetp6eqetp6e%20%282%29%20%281%29.png",
     price: 1850,
     originalPrice: 2500,
-    category: "Copper Bottle",
+    category: "Wall Decor",
     discountPercent: 26,
   },
   {
@@ -145,7 +139,7 @@ export const shopProducts: ShopProduct[] = [
     image:
       "https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_v79njrv79njrv79n_1%20%281%29.png",
     price: 599,
-    category: "Place Mats",
+    category: "Wall Decor",
   },
   {
     id: "sp-12",
@@ -154,7 +148,7 @@ export const shopProducts: ShopProduct[] = [
       "https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_r29lxnr29lxnr29l%20%281%29.png",
     price: 899,
     originalPrice: 1200,
-    category: "Table Mats",
+    category: "Wall Decor",
     discountPercent: 25,
   },
 ]

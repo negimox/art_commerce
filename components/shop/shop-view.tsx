@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react"
 import { SlidersHorizontal, X } from "lucide-react"
-import { shopProducts, priceRanges } from "@/lib/shop-data"
+import type { ShopProduct, ShopCategory, PriceRange } from "@/lib/supabase/queries"
 import { FilterSidebar } from "./filter-sidebar"
 import { ShopToolbar } from "./shop-toolbar"
 import { ProductGrid } from "./product-grid"
@@ -12,9 +12,17 @@ const ITEMS_PER_PAGE = 12
 
 interface ShopViewProps {
   category?: string
+  initialProducts: ShopProduct[]
+  shopCategories: ShopCategory[]
+  priceRanges: PriceRange[]
 }
 
-export function ShopView({ category = "Kitchen and Dining" }: ShopViewProps) {
+export function ShopView({
+  category = "Handmade Nature Frames",
+  initialProducts,
+  shopCategories,
+  priceRanges,
+}: ShopViewProps) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedPriceRanges, setSelectedPriceRanges] = useState<number[]>([])
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
@@ -22,9 +30,8 @@ export function ShopView({ category = "Kitchen and Dining" }: ShopViewProps) {
   const [currentPage, setCurrentPage] = useState(1)
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false)
 
-  // --- Filtering ---
   const filteredProducts = useMemo(() => {
-    let products = [...shopProducts]
+    let products = [...initialProducts]
 
     if (selectedCategories.length > 0) {
       products = products.filter((p) => selectedCategories.includes(p.category))
@@ -129,6 +136,8 @@ export function ShopView({ category = "Kitchen and Dining" }: ShopViewProps) {
               onCategoryToggle={handleCategoryToggle}
               onPriceRangeToggle={handlePriceToggle}
               onClearFilters={handleClearFilters}
+              shopCategories={shopCategories}
+              priceRanges={priceRanges}
             />
           </div>
         </div>
@@ -144,6 +153,8 @@ export function ShopView({ category = "Kitchen and Dining" }: ShopViewProps) {
             onCategoryToggle={handleCategoryToggle}
             onPriceRangeToggle={handlePriceToggle}
             onClearFilters={handleClearFilters}
+            shopCategories={shopCategories}
+            priceRanges={priceRanges}
           />
         </div>
 
