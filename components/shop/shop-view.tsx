@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
+import { useSearchParams } from "next/navigation"
 import { SlidersHorizontal, X } from "lucide-react"
 import type { ShopProduct, ShopCategory, PriceRange } from "@/lib/supabase/queries"
 import { FilterSidebar } from "./filter-sidebar"
@@ -23,6 +24,9 @@ export function ShopView({
   shopCategories,
   priceRanges,
 }: ShopViewProps) {
+  const searchParams = useSearchParams()
+  const searchQuery = searchParams.get("search") || ""
+
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedPriceRanges, setSelectedPriceRanges] = useState<number[]>([])
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
@@ -32,6 +36,16 @@ export function ShopView({
 
   const filteredProducts = useMemo(() => {
     let products = [...initialProducts]
+
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase()
+      products = products.filter(
+        (p) =>
+          p.title.toLowerCase().includes(q) ||
+          p.description?.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q)
+      )
+    }
 
     if (selectedCategories.length > 0) {
       products = products.filter((p) => selectedCategories.includes(p.category))
@@ -62,7 +76,7 @@ export function ShopView({
     }
 
     return products
-  }, [selectedCategories, selectedPriceRanges, sortBy])
+  }, [selectedCategories, selectedPriceRanges, sortBy, searchQuery, initialProducts])
 
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)
   const paginatedProducts = filteredProducts.slice(
@@ -93,8 +107,15 @@ export function ShopView({
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
       {/* Page title */}
-      <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-serif font-normal text-zinc-900">{category}</h1>
+      <div className="mb-6 flex flex-col gap-1">
+        <h1 className="text-2xl md:text-3xl font-serif font-normal text-zinc-900">
+          {searchQuery ? `Search Results for "${searchQuery}"` : category}
+        </h1>
+        {searchQuery && (
+          <p className="text-sm text-zinc-500">
+            Found {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"}
+          </p>
+        )}
       </div>
 
       {/* Mobile filter toggle */}

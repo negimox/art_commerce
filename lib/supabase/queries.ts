@@ -45,6 +45,7 @@ export interface ShopProduct {
   reviewCount?: number;
   badge?: string;
   isNew?: boolean;
+  description?: string;
   slug: string;
 }
 
@@ -98,6 +99,7 @@ function rowToShopProduct(row: ProductRow): ShopProduct {
     reviewCount: row.review_count ?? 0,
     badge: row.badge ?? undefined,
     isNew: row.is_new ?? false,
+    description: row.description ?? "",
     slug: row.slug,
   };
 }
