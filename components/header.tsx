@@ -10,7 +10,17 @@ import { useCart } from "@/context/cart-context"
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
-  const isScrolled = true
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20)
+    }
+    window.addEventListener("scroll", handleScroll)
+    handleScroll()
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
   const { itemCount } = useCart()
 
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -78,71 +88,72 @@ export function Header() {
   }
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "px-4 pt-4" : ""}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "px-4 pt-4 md:px-0 md:pt-0" : ""}`}>
       <div
         className={`max-w-7xl mx-auto transition-all duration-300 rounded-2xl ${isScrolled
-            ? "bg-white/70 backdrop-blur-xl border border-zinc-200 px-6 py-3"
-            : "bg-background/90 backdrop-blur-md px-6 py-5"
+            ? "bg-white/70 backdrop-blur-xl border border-zinc-200 px-6 py-3 md:px-0 md:py-0"
+            : "bg-background/90 backdrop-blur-md px-6 py-5 md:px-0 md:py-0"
           }`}
       >
         <div className="relative flex items-center justify-between">
-          {/* Left: Mobile hamburger & Desktop nav links */}
-          <div className="flex items-center gap-8">
-            <button
-              className={`md:hidden flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 ${
-                isScrolled
-                  ? "text-zinc-700 hover:text-black hover:bg-zinc-100"
-                  : "text-foreground hover:bg-foreground/10"
-              }`}
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label={isOpen ? "Close menu" : "Open menu"}
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+          {/* Mobile: hamburger */}
+          <button
+            className={`md:hidden flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 ${
+              isScrolled
+                ? "text-zinc-700 hover:text-black hover:bg-zinc-100"
+                : "text-foreground hover:bg-foreground/10"
+            }`}
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
 
-            <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-              <a
-                href="#new-arrivals"
-                onClick={(e) => handleSmoothScroll(e, "new-arrivals")}
-                className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-                  }`}
-              >
-                New Arrivals
-              </a>
-              <Link
-                href="/shop"
-                className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-                  }`}
-              >
-                Shop
-              </Link>
-              <Link
-                href="/about"
-                className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-                  }`}
-              >
-                About
-              </Link>
-              <Link
-                href="/contact"
-                className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-                  }`}
-              >
-                Contact
-              </Link>
-            </nav>
-          </div>
-
-          {/* Center: Brand logo image */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none">
+          {/* Brand logo image */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:static md:translate-x-0 md:translate-y-0 flex items-center justify-center pointer-events-none md:pointer-events-auto z-10">
             <a href="#" onClick={handleLogoClick} className="flex items-center justify-center cursor-pointer pointer-events-auto">
               <img
                 src="/images/himflora-logo.png"
                 alt="Himflora"
-                className="h-14 md:h-16 w-auto object-contain transition-all duration-300"
+                className={`w-auto object-contain transition-all duration-300 ${
+                  isScrolled ? "h-14 md:h-14" : "h-14 md:h-16"
+                }`}
               />
             </a>
           </div>
+
+          {/* Desktop nav links */}
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8">
+            <a
+              href="#new-arrivals"
+              onClick={(e) => handleSmoothScroll(e, "new-arrivals")}
+              className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
+                }`}
+            >
+              New Arrivals
+            </a>
+            <Link
+              href="/shop"
+              className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
+                }`}
+            >
+              Shop
+            </Link>
+            <Link
+              href="/about"
+              className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
+                }`}
+            >
+              About
+            </Link>
+            <Link
+              href="/contact"
+              className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
+                }`}
+            >
+              Contact
+            </Link>
+          </nav>
 
           {/* Right: Search & Cart */}
           <div className="flex items-center gap-1">

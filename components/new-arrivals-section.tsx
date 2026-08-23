@@ -27,19 +27,23 @@ export function NewArrivalsSection({ artworks }: NewArrivalsSectionProps) {
             <CarouselContent>
               {featuredArtworks.map((artwork) => (
                 <CarouselItem key={artwork.id}>
-                  <div className="relative overflow-hidden rounded-lg h-[400px] md:h-[500px] bg-background border border-border">
+                  <div className="relative overflow-hidden rounded-lg h-[400px] md:h-[500px] bg-background border border-border group">
                     <img
                       src={artwork.image}
                       alt={artwork.title}
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-black/20" />
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6 md:p-8">
-                      <h3 className="text-2xl md:text-3xl font-serif font-normal text-white mb-2">
+                    <div className="absolute inset-0 bg-black/20 lg:bg-black/10 lg:group-hover:bg-black/30 transition-colors duration-300" />
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 md:p-8">
+                      <h3 className="text-lg md:text-xl font-serif font-normal text-white mb-2">
                         {artwork.title}
                       </h3>
-                      <p className="text-white/80 mb-4">{artwork.description}</p>
-                      <p className="text-xl font-semibold text-white">₹{artwork.price.toLocaleString()}</p>
+                      <div className="hidden lg:block max-h-0 opacity-0 group-hover:max-h-[250px] group-hover:opacity-100 transition-all duration-500 ease-in-out overflow-hidden">
+                        <p className="text-white/80 mb-4 mt-2">
+                          {artwork.description}
+                        </p>
+                        <p className="text-xl font-semibold text-white">₹{artwork.price.toLocaleString()}</p>
+                      </div>
                     </div>
                   </div>
                 </CarouselItem>
