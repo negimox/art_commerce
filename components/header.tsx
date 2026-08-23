@@ -85,87 +85,67 @@ export function Header() {
             : "bg-background/90 backdrop-blur-md px-6 py-5"
           }`}
       >
-        <div className="flex items-center justify-between">
-          {/* Mobile: hamburger */}
-          <button
-            className={`md:hidden flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 ${
-              isScrolled
-                ? "text-zinc-700 hover:text-black hover:bg-zinc-100"
-                : "text-foreground hover:bg-foreground/10"
-            }`}
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label={isOpen ? "Close menu" : "Open menu"}
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-
-          <a href="#" onClick={handleLogoClick} className="flex items-center gap-2 cursor-pointer">
-            <svg
-              className={`w-6 h-6 transition-colors duration-300 ${isScrolled ? "text-black" : "text-foreground"}`}
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-            </svg>
-            <span
-              className={`text-lg font-medium tracking-tight transition-colors duration-300 ${isScrolled ? "text-black" : "text-foreground"}`}
-            >
-              Himflora
-            </span>
-          </a>
-
-          <nav className="hidden md:flex items-center gap-8">
-            <a
-              href="#new-arrivals"
-              onClick={(e) => handleSmoothScroll(e, "new-arrivals")}
-              className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-                }`}
-            >
-              New Arrivals
-            </a>
-            <Link
-              href="/shop"
-              className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-                }`}
-            >
-              Shop
-            </Link>
-            <Link
-              href="/about"
-              className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-                }`}
-            >
-              About
-            </Link>
-            <Link
-              href="/contact"
-              className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-                }`}
-            >
-              Contact
-            </Link>
-          </nav>
-
-          {/* Desktop cart icon */}
-          <div className="hidden md:flex items-center gap-1">
+        <div className="relative flex items-center justify-between">
+          {/* Left: Mobile hamburger & Desktop nav links */}
+          <div className="flex items-center gap-8">
             <button
-              onClick={() => setIsSearchOpen(true)}
-              aria-label="Search products"
-              className={`relative group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 ${
+              className={`md:hidden flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 ${
                 isScrolled
                   ? "text-zinc-700 hover:text-black hover:bg-zinc-100"
                   : "text-foreground hover:bg-foreground/10"
               }`}
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label={isOpen ? "Close menu" : "Open menu"}
             >
-              <Search className="w-5 h-5" />
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
-            <CartButton itemCount={itemCount} isScrolled={isScrolled} />
+
+            <nav className="hidden md:flex items-center gap-6 lg:gap-8">
+              <a
+                href="#new-arrivals"
+                onClick={(e) => handleSmoothScroll(e, "new-arrivals")}
+                className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
+                  }`}
+              >
+                New Arrivals
+              </a>
+              <Link
+                href="/shop"
+                className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
+                  }`}
+              >
+                Shop
+              </Link>
+              <Link
+                href="/about"
+                className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
+                  }`}
+              >
+                About
+              </Link>
+              <Link
+                href="/contact"
+                className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
+                  }`}
+              >
+                Contact
+              </Link>
+            </nav>
           </div>
 
-          {/* Mobile: cart */}
-          <div className="flex md:hidden items-center gap-1">
+          {/* Center: Brand logo image */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none">
+            <a href="#" onClick={handleLogoClick} className="flex items-center justify-center cursor-pointer pointer-events-auto">
+              <img
+                src="/images/himflora-logo.png"
+                alt="Himflora"
+                className="h-14 md:h-16 w-auto object-contain transition-all duration-300"
+              />
+            </a>
+          </div>
+
+          {/* Right: Search & Cart */}
+          <div className="flex items-center gap-1">
             <button
               onClick={() => setIsSearchOpen(true)}
               aria-label="Search products"
