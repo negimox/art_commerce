@@ -107,7 +107,8 @@ create table products (
   sizes            text[] not null default '{}',
   size_pricing     jsonb,
   slug             text not null unique,
-  type             product_type not null default 'shop_product'
+  type             product_type not null default 'shop_product',
+  sequence         integer
 );
 
 -- Updated-at trigger

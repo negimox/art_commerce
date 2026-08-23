@@ -30,6 +30,7 @@ export interface Artwork {
   originalPrice?: number;
   badge?: string;
   slug: string;
+  sequence?: number | null;
 }
 
 export interface ShopProduct {
@@ -82,6 +83,7 @@ function rowToArtwork(row: ProductRow): Artwork {
     originalPrice: row.original_price ? Number(row.original_price) : undefined,
     badge: row.badge ?? undefined,
     slug: row.slug,
+    sequence: row.sequence,
   };
 }
 
@@ -117,6 +119,7 @@ export async function getArtworks(): Promise<Artwork[]> {
     .select("*")
     .eq("type", "artwork")
     .eq("is_active", true)
+    .order("sequence", { ascending: true, nullsFirst: false })
     .order("created_at", { ascending: true });
 
   if (error) {

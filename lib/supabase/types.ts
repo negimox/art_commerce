@@ -40,6 +40,7 @@ export type Database = {
           size_pricing: Json | null;
           slug: string;
           type: "artwork" | "shop_product";
+          sequence: number | null;
         };
         Insert: Omit<
           Database["public"]["Tables"]["products"]["Row"],
