@@ -23,6 +23,7 @@ export type UnifiedProduct = {
   dimensions?: string
   shippingStatus?: string
   sizes?: string[]
+  sizePricing?: { size: string; price: number }[]
   badge?: string
 }
 
@@ -50,6 +51,7 @@ async function getProduct(id: string): Promise<UnifiedProduct | null> {
       dimensions: artwork.dimensions,
       shippingStatus: artwork.shippingStatus,
       sizes: artwork.sizes,
+      sizePricing: artwork.sizePricing,
       badge: artwork.badge,
     }
   }
@@ -67,6 +69,7 @@ async function getProduct(id: string): Promise<UnifiedProduct | null> {
       discountPercent: shopProduct.discountPercent,
       description: `Handcrafted ${shopProduct.category.toLowerCase()} piece made with care and traditional techniques.`,
       sizes: ["Standard"],
+      sizePricing: shopProduct.sizePricing,
       badge: shopProduct.badge,
     }
   }
@@ -98,6 +101,7 @@ async function getRelated(product: UnifiedProduct): Promise<UnifiedProduct[]> {
       dimensions: a.dimensions,
       shippingStatus: a.shippingStatus,
       sizes: a.sizes,
+      sizePricing: a.sizePricing,
     }))
 
   if (artworkRelated.length >= 3) return artworkRelated
@@ -116,6 +120,7 @@ async function getRelated(product: UnifiedProduct): Promise<UnifiedProduct[]> {
       discountPercent: p.discountPercent,
       description: `Handcrafted ${p.category.toLowerCase()} piece.`,
       sizes: ["Standard"] as string[],
+      sizePricing: p.sizePricing,
     }))
 
   return [...artworkRelated, ...shopRelated].slice(0, 3)

@@ -37,6 +37,7 @@ export type Database = {
           dimensions: string | null;
           shipping_status: "Made To Order" | "Ready to Ship" | null;
           sizes: string[];
+          size_pricing: Json | null;
           slug: string;
           type: "artwork" | "shop_product";
         };

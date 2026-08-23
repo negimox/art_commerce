@@ -21,6 +21,7 @@ export interface Artwork {
   price: number;
   category: string;
   sizes: string[];
+  sizePricing?: { size: string; price: number }[];
   description: string;
   featured?: boolean;
   artist?: string;
@@ -38,6 +39,7 @@ export interface ShopProduct {
   price: number;
   originalPrice?: number;
   category: string;
+  sizePricing?: { size: string; price: number }[];
   discountPercent?: number;
   rating?: number;
   reviewCount?: number;
@@ -70,6 +72,7 @@ function rowToArtwork(row: ProductRow): Artwork {
     price: Number(row.price),
     category: row.category,
     sizes: row.sizes ?? [],
+    sizePricing: (row.size_pricing as any) ?? undefined,
     description: row.description ?? "",
     featured: row.is_new ?? false,
     artist: row.artist ?? undefined,
@@ -89,6 +92,7 @@ function rowToShopProduct(row: ProductRow): ShopProduct {
     price: Number(row.price),
     originalPrice: row.original_price ? Number(row.original_price) : undefined,
     category: row.category,
+    sizePricing: (row.size_pricing as any) ?? undefined,
     discountPercent: row.discount_percent ? Number(row.discount_percent) : undefined,
     rating: row.rating ? Number(row.rating) : undefined,
     reviewCount: row.review_count ?? 0,

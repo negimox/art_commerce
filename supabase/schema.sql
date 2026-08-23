@@ -105,6 +105,7 @@ create table products (
   dimensions       text,
   shipping_status  shipping_status_type,
   sizes            text[] not null default '{}',
+  size_pricing     jsonb,
   slug             text not null unique,
   type             product_type not null default 'shop_product'
 );
@@ -308,3 +309,12 @@ create index on order_items (product_id);
 create index on reviews  (product_id);
 create index on wishlist (user_id);
 create index on coupons  (code);
+
+-- ─────────────────────────────────────────────
+-- GRANTS
+-- ─────────────────────────────────────────────
+GRANT USAGE ON SCHEMA public TO anon, authenticated;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO anon, authenticated;
+GRANT INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO authenticated;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO authenticated;

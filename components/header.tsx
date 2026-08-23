@@ -50,6 +50,19 @@ export function Header() {
           }`}
       >
         <div className="flex items-center justify-between">
+          {/* Mobile: hamburger */}
+          <button
+            className={`md:hidden flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 ${
+              isScrolled
+                ? "text-zinc-700 hover:text-black hover:bg-zinc-100"
+                : "text-foreground hover:bg-foreground/10"
+            }`}
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
           <a href="#" onClick={handleLogoClick} className="flex items-center gap-2 cursor-pointer">
             <svg
               className={`w-6 h-6 transition-colors duration-300 ${isScrolled ? "text-black" : "text-foreground"}`}
@@ -104,15 +117,9 @@ export function Header() {
             <CartButton itemCount={itemCount} isScrolled={isScrolled} />
           </div>
 
-          {/* Mobile: cart + hamburger */}
-          <div className="flex md:hidden items-center gap-3">
+          {/* Mobile: cart */}
+          <div className="flex md:hidden items-center">
             <CartButton itemCount={itemCount} isScrolled={isScrolled} />
-            <button
-              className={`transition-colors duration-300 ${isScrolled ? "text-black" : "text-foreground"}`}
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
           </div>
         </div>
 

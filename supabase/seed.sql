@@ -44,7 +44,7 @@ delete from products where slug in (
 insert into products (
   title, description, price, original_price, discount_percent,
   category, image_url, images, badge, is_new,
-  artist, dimensions, shipping_status, sizes, slug, type, stock_quantity, is_active
+  artist, dimensions, shipping_status, sizes, size_pricing, slug, type, stock_quantity, is_active
 ) values
 
 -- id "1"
@@ -54,7 +54,7 @@ insert into products (
   1500, null, null, 'Hanging Florals',
   'https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_tp6eqetp6eqetp6e%20%282%29%20%281%29.png',
   '{}', null, true, 'Sanjay', '10 in x 10 in', 'Made To Order',
-  array['A4','A3','A2'], 'coffee-and-conversation-phad-painting', 'artwork', 10, true
+  array['A4','A3','A2'], '[{"size": "A4", "price": 1500}, {"size": "A3", "price": 2000}, {"size": "A2", "price": 2500}]'::jsonb, 'coffee-and-conversation-phad-painting', 'artwork', 10, true
 ),
 
 -- id "2"
@@ -64,7 +64,7 @@ insert into products (
   1800, 2000, 10, 'Botanical',
   'https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_v79njrv79njrv79n_1%20%281%29.png',
   '{}', null, true, 'Sanjay', '10 in x 10 in', 'Ready to Ship',
-  array['A4','A3'], 'at-the-heart-of-the-blue-warli-painting', 'artwork', 5, true
+  array['A4','A3'], '[{"size": "A4", "price": 1800}, {"size": "A3", "price": 2200}]'::jsonb, 'at-the-heart-of-the-blue-warli-painting', 'artwork', 5, true
 ),
 
 -- id "3"
@@ -74,7 +74,7 @@ insert into products (
   2300, null, null, 'Hanging Florals',
   'https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_r29lxnr29lxnr29l%20%281%29.png',
   '{}', null, true, 'Sanjay', '72 in x 60 in', 'Made To Order',
-  array['A4','A3','A2'], 'sharad-poornima-pichwai-by-sanjay', 'artwork', 3, true
+  array['A4','A3','A2'], '[{"size": "A4", "price": 2300}, {"size": "A3", "price": 2800}, {"size": "A2", "price": 3200}]'::jsonb, 'sharad-poornima-pichwai-by-sanjay', 'artwork', 3, true
 ),
 
 -- id "4"
@@ -84,7 +84,7 @@ insert into products (
   1149, null, null, 'Botanical',
   'https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_797yu7797yu7797y%20%281%29.png',
   '{}', null, false, null, null, null,
-  array['A4','A3','A2'], 'sunset-petals', 'artwork', 10, true
+  array['A4','A3','A2'], '[{"size": "A4", "price": 1149}, {"size": "A3", "price": 1500}, {"size": "A2", "price": 2000}]'::jsonb, 'sunset-petals', 'artwork', 10, true
 ),
 
 -- id "5"
@@ -94,7 +94,7 @@ insert into products (
   1299, null, null, 'Hanging Florals',
   'https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_700uri700uri700u%20%281%29.png',
   '{}', null, false, null, null, null,
-  array['A4','A3','A2'], 'meadow-dreams', 'artwork', 10, true
+  array['A4','A3','A2'], '[{"size": "A4", "price": 1299}, {"size": "A3", "price": 1700}, {"size": "A2", "price": 2100}]'::jsonb, 'meadow-dreams', 'artwork', 10, true
 ),
 
 -- id "6"
@@ -104,7 +104,7 @@ insert into products (
   1349, null, null, 'Botanical',
   'https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_p9qf5ip9qf5ip9qf%20%281%29.png',
   '{}', null, false, null, null, null,
-  array['A4','A3','A2'], 'rose-symphony', 'artwork', 10, true
+  array['A4','A3','A2'], '[{"size": "A4", "price": 1349}, {"size": "A3", "price": 1800}, {"size": "A2", "price": 2200}]'::jsonb, 'rose-symphony', 'artwork', 10, true
 ),
 
 -- id "7"
@@ -114,7 +114,7 @@ insert into products (
   899, null, null, 'Hanging Florals',
   'https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_ljo2m6ljo2m6ljo2%20%281%29.png',
   '{}', null, false, null, null, null,
-  array['A4','A3'], 'fern-whispers', 'artwork', 10, true
+  array['A4','A3'], '[{"size": "A4", "price": 899}, {"size": "A3", "price": 1200}]'::jsonb, 'fern-whispers', 'artwork', 10, true
 ),
 
 -- id "8"
@@ -124,7 +124,7 @@ insert into products (
   1249, null, null, 'Botanical',
   'https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_au7wv7au7wv7au7w%20%281%29.png',
   '{}', null, false, null, null, null,
-  array['A4','A3','A2'], 'garden-bliss', 'artwork', 10, true
+  array['A4','A3','A2'], '[{"size": "A4", "price": 1249}, {"size": "A3", "price": 1600}, {"size": "A2", "price": 2000}]'::jsonb, 'garden-bliss', 'artwork', 10, true
 ),
 
 -- id "9"
@@ -134,7 +134,7 @@ insert into products (
   1199, null, null, 'Hanging Florals',
   'https://wb8p483whar24efq.public.blob.vercel-storage.com/Gemini_Generated_Image_fznjfkfznjfkfznj%20%281%29.png',
   '{}', null, false, null, null, null,
-  array['A4','A3','A2'], 'floral-cascade', 'artwork', 10, true
+  array['A4','A3','A2'], '[{"size": "A4", "price": 1199}, {"size": "A3", "price": 1500}, {"size": "A2", "price": 1900}]'::jsonb, 'floral-cascade', 'artwork', 10, true
 );
 
 -- ─────────────────────────────────────────────
