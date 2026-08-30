@@ -146,7 +146,7 @@ export default function CartPage() {
                 {shipping > 0 && (
                   <p className="text-xs text-zinc-400 flex items-center gap-1">
                     <Tag className="w-3 h-3" />
-                    Free shipping on orders above ₹2,000
+                    Free shipping on orders above ₹1,000
                   </p>
                 )}
                 <div className="border-t border-zinc-100 pt-3 flex justify-between text-base font-semibold text-zinc-900">

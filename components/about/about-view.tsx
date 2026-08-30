@@ -224,7 +224,7 @@ export function AboutView() {
       </section>
 
       {/* ── Team ─────────────────────────────────────────────── */}
-      <section className="px-6 py-20 md:py-28 bg-white">
+      {/* <section className="px-6 py-20 md:py-28 bg-white">
         <div className="max-w-5xl mx-auto">
           <AnimateIn className="text-center mb-14">
             <p className="text-sm font-medium uppercase tracking-[0.2em] text-amber-700 mb-3">
@@ -253,7 +253,7 @@ export function AboutView() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ── CTA ──────────────────────────────────────────────── */}
       <section className="px-6 py-20 bg-zinc-900">

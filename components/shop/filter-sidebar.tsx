@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { ChevronUp, ChevronDown } from "lucide-react"
-import { shopCategories, priceRanges } from "@/lib/shop-data"
+import type { ShopCategory, PriceRange } from "@/lib/supabase/queries"
 
 interface FilterSidebarProps {
   selectedCategories: string[]
@@ -10,6 +10,8 @@ interface FilterSidebarProps {
   onCategoryToggle: (category: string) => void
   onPriceRangeToggle: (index: number) => void
   onClearFilters: () => void
+  shopCategories: ShopCategory[]
+  priceRanges: PriceRange[]
 }
 
 function FilterSection({
@@ -55,6 +57,8 @@ export function FilterSidebar({
   onCategoryToggle,
   onPriceRangeToggle,
   onClearFilters,
+  shopCategories,
+  priceRanges,
 }: FilterSidebarProps) {
   const hasActiveFilters = selectedCategories.length > 0 || selectedPriceRanges.length > 0
 

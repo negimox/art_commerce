@@ -1,8 +1,7 @@
 import { notFound } from "next/navigation"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { artworks } from "@/lib/artworks"
-import { shopProducts } from "@/lib/shop-data"
+import { getArtworks, getShopProducts } from "@/lib/supabase/queries"
 import { ProductDetail } from "./product-detail"
 import type { Metadata } from "next"
 
@@ -24,12 +23,18 @@ export type UnifiedProduct = {
   dimensions?: string
   shippingStatus?: string
   sizes?: string[]
+  sizePricing?: { size: string; price: number }[]
   badge?: string
 }
 
-function getProduct(id: string): UnifiedProduct | null {
-  // Check artworks first
-  const artwork = artworks.find((a) => a.id === id)
+async function getProduct(id: string): Promise<UnifiedProduct | null> {
+  const [artworks, shopProducts] = await Promise.all([
+    getArtworks(),
+    getShopProducts(),
+  ])
+
+  // Check artworks first (match by uuid or by slug for legacy ids)
+  const artwork = artworks.find((a) => a.id === id || a.slug === id)
   if (artwork) {
     return {
       id: artwork.id,
@@ -46,12 +51,13 @@ function getProduct(id: string): UnifiedProduct | null {
       dimensions: artwork.dimensions,
       shippingStatus: artwork.shippingStatus,
       sizes: artwork.sizes,
+      sizePricing: artwork.sizePricing,
       badge: artwork.badge,
     }
   }
 
   // Check shop products
-  const shopProduct = shopProducts.find((p) => p.id === id)
+  const shopProduct = shopProducts.find((p) => p.id === id || p.slug === id)
   if (shopProduct) {
     return {
       id: shopProduct.id,
@@ -63,6 +69,7 @@ function getProduct(id: string): UnifiedProduct | null {
       discountPercent: shopProduct.discountPercent,
       description: `Handcrafted ${shopProduct.category.toLowerCase()} piece made with care and traditional techniques.`,
       sizes: ["Standard"],
+      sizePricing: shopProduct.sizePricing,
       badge: shopProduct.badge,
     }
   }
@@ -70,7 +77,12 @@ function getProduct(id: string): UnifiedProduct | null {
   return null
 }
 
-function getRelated(product: UnifiedProduct): UnifiedProduct[] {
+async function getRelated(product: UnifiedProduct): Promise<UnifiedProduct[]> {
+  const [artworks, shopProducts] = await Promise.all([
+    getArtworks(),
+    getShopProducts(),
+  ])
+
   const artworkRelated = artworks
     .filter((a) => a.id !== product.id && a.category === product.category)
     .slice(0, 3)
@@ -89,6 +101,7 @@ function getRelated(product: UnifiedProduct): UnifiedProduct[] {
       dimensions: a.dimensions,
       shippingStatus: a.shippingStatus,
       sizes: a.sizes,
+      sizePricing: a.sizePricing,
     }))
 
   if (artworkRelated.length >= 3) return artworkRelated
@@ -107,6 +120,7 @@ function getRelated(product: UnifiedProduct): UnifiedProduct[] {
       discountPercent: p.discountPercent,
       description: `Handcrafted ${p.category.toLowerCase()} piece.`,
       sizes: ["Standard"] as string[],
+      sizePricing: p.sizePricing,
     }))
 
   return [...artworkRelated, ...shopRelated].slice(0, 3)
@@ -114,7 +128,7 @@ function getRelated(product: UnifiedProduct): UnifiedProduct[] {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params
-  const product = getProduct(id)
+  const product = await getProduct(id)
   if (!product) return { title: "Not Found | HimFlora" }
   return {
     title: `${product.title} | HimFlora`,
@@ -124,13 +138,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductPage({ params }: Props) {
   const { id } = await params
-  const product = getProduct(id)
+  const product = await getProduct(id)
 
   if (!product) {
     notFound()
   }
 
-  const related = getRelated(product!)
+  const related = await getRelated(product!)
 
   return (
     <main className="min-h-screen bg-[#faf9f7]">

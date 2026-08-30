@@ -1,6 +1,6 @@
 "use client"
 
-import type { ShopProduct } from "@/lib/shop-data"
+import type { ShopProduct } from "@/lib/supabase/queries"
 import { ProductCard } from "./product-card"
 
 interface ProductGridProps {
