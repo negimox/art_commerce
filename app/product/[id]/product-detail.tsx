@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import Link from "next/link"
 import { useCart } from "@/context/cart-context"
 import type { UnifiedProduct } from "./page"
@@ -81,13 +81,21 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
   const [isWishlisted, setIsWishlisted] = useState(false)
   const [added, setAdded] = useState(false)
   const { addItem } = useCart()
+  
+  const currentPrice = useMemo(() => {
+    if (product.sizePricing && product.sizePricing.length > 0) {
+      const sizePrice = product.sizePricing.find((sp) => sp.size === selectedSize)
+      if (sizePrice) return sizePrice.price
+    }
+    return product.price
+  }, [product.sizePricing, product.price, selectedSize])
 
   function handleAddToCart() {
     for (let i = 0; i < quantity; i++) {
       addItem({
         id: `${product.id}-${selectedSize}`,
         name: `${product.title} (${selectedSize})`,
-        price: product.price,
+        price: currentPrice,
         image: product.image,
       })
     }
@@ -200,7 +208,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
 
           {/* Price */}
           <div className="flex items-baseline gap-3 pb-6 mb-6 border-b border-zinc-100">
-            <span className="text-3xl font-bold text-zinc-900">₹{product.price.toLocaleString()}</span>
+            <span className="text-3xl font-bold text-zinc-900">₹{currentPrice.toLocaleString()}</span>
             {product.originalPrice && (
               <>
                 <span className="text-lg text-zinc-400 line-through">₹{product.originalPrice.toLocaleString()}</span>
@@ -277,7 +285,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
               {added ? (
                 <><Check className="w-5 h-5" /> Added to Cart!</>
               ) : (
-                <><ShoppingCart className="w-5 h-5" /> Add to Cart — ₹{(product.price * quantity).toLocaleString()}</>
+                <><ShoppingCart className="w-5 h-5" /> Add to Cart — ₹{(currentPrice * quantity).toLocaleString()}</>
               )}
             </button>
             <button

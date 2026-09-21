@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Heart, ShoppingCart, Eye, Check } from "lucide-react"
-import type { ShopProduct } from "@/lib/shop-data"
+import type { ShopProduct } from "@/lib/supabase/queries"
 import { useCart } from "@/context/cart-context"
 
 interface ProductCardProps {

@@ -56,8 +56,8 @@ const contactMethods = [
   {
     icon: Mail,
     label: "Email us",
-    value: "hello@himflora.in",
-    href: "mailto:hello@himflora.in",
+    value: "contact.himflora@gmail.com",
+    href: "mailto:contact.himflora@gmail.com",
     description: "We reply within 24 hours on working days.",
   },
   {
@@ -77,8 +77,8 @@ const contactMethods = [
   {
     icon: MapPin,
     label: "Studio",
-    value: "Dharamshala, Himachal Pradesh",
-    href: "#",
+    value: "Mussoorie, Uttarakhand",
+    href: "https://maps.app.goo.gl/7WY1mtC4kJBqUngb7",
     description: "By-appointment visits for local customers.",
   },
 ]

@@ -112,7 +112,7 @@ export function HeroSection() {
           }}
         >
           Handcrafted pressed flower art that celebrates
-          culture, devotion &amp; timeless beauty.
+          culture, devotion <br/> &amp; timeless beauty.
         </p>
 
         {/* CTA button — matches reference "Explore Collection »»" */}

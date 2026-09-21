@@ -2,45 +2,40 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 const faqs = [
   {
-    question: "How do I post a listing on Homie?",
+    question: "Are all the flowers and leaves 100% real?",
     answer:
-      "It's very simple! Create an account, click 'Post a listing', add photos and a description of your property, set the price and availability. Your listing will be live within minutes after verification.",
+      "Yes! Every botanical element is ethically collected and dried from Himalayan flora. We never use artificial or synthetic flowers.",
   },
   {
-    question: "What are the fees for owners?",
+    question: "How long will my pressed flower artwork last?",
     answer:
-      "Homie charges a 3% commission only when a rental is confirmed. No listing fees, no mandatory subscription. The Pro plan at $49/month reduces the commission to 2% for multi-property owners.",
+      "With our specialized dehydration and UV-stabilization technique, artworks maintain their vibrant colors for years when kept out of direct sunlight and moisture.",
   },
   {
-    question: "How are tenants verified?",
+    question: "Can I request a custom botanical artwork?",
     answer:
-      "Each tenant must provide an ID and proof of income. We verify these documents and assign a trust score. Owners can view the complete profile before accepting a request.",
+      "Absolutely. We accept custom commissions for special flowers, bridal bouquet preservation, and personalized framing. Reach out via our Contact page or WhatsApp.",
   },
   {
-    question: "Are payments secure?",
+    question: "What happens if the glass frame breaks during transit?",
     answer:
-      "Yes, all payments go through our secure platform. Funds are held until check-in confirmation, then released to the owner. In case of disputes, our team intervenes to find a solution.",
+      "All parcels are packed with multi-layered protective materials. If any damage occurs during shipping, send us a photo within 7 days for a free immediate replacement or full refund.",
   },
   {
-    question: "What does the damage insurance cover?",
+    question: "How long does shipping take across India?",
     answer:
-      "Our included insurance covers material damage up to $5,000 per rental. It protects owners against accidental damage. A $200 deductible applies in case of a claim.",
-  },
-  {
-    question: "Can I cancel a reservation?",
-    answer:
-      "Cancellation conditions are set by each owner (flexible, moderate, or strict). Refunds are calculated based on these conditions. Force majeure cases may qualify for a full refund.",
+      "Standard orders are dispatched within 24–48 hours and typically arrive within 3 to 5 business days.",
   },
 ]
 
 export function FAQSection() {
   return (
-    <section id="faq" className="py-32 px-6 pb-80">
+    <section id="faq" className="py-24 px-6">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-normal mb-6 text-balance font-serif">Frequently asked questions</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Everything you need to know about Homie. Have a question not listed? Contact our support.
+            Everything you need to know about Himflora botanical artworks. Have a question not listed? Contact our support.
           </p>
         </div>
 

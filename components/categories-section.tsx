@@ -1,9 +1,17 @@
 "use client"
 import { useEffect, useState } from "react"
-import { categories } from "@/lib/artworks"
 
-export function CategoriesSection() {
-  const [loadedCategories, setLoadedCategories] = useState<typeof categories>([])
+interface Category {
+  name: string
+  count: number
+}
+
+interface CategoriesSectionProps {
+  categories: Category[]
+}
+
+export function CategoriesSection({ categories }: CategoriesSectionProps) {
+  const [loadedCategories, setLoadedCategories] = useState<Category[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
