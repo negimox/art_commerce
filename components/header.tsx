@@ -124,14 +124,6 @@ export function Header() {
 
           {/* Desktop nav links */}
           <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-            <a
-              href="#new-arrivals"
-              onClick={(e) => handleSmoothScroll(e, "new-arrivals")}
-              className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-                }`}
-            >
-              New Arrivals
-            </a>
             <Link
               href="/shop"
               className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
@@ -177,14 +169,6 @@ export function Header() {
             className={`md:hidden mt-6 pb-6 flex flex-col gap-4 border-t pt-6 ${isScrolled ? "border-zinc-200" : "border-border"
               }`}
           >
-            <a
-              href="#new-arrivals"
-              onClick={(e) => handleSmoothScroll(e, "new-arrivals")}
-              className={`transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-                }`}
-            >
-              New Arrivals
-            </a>
             <Link
               href="/shop"
               className={`transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
