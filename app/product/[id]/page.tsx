@@ -1,7 +1,12 @@
 import { notFound } from "next/navigation"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { getArtworks, getShopProducts } from "@/lib/supabase/queries"
+import {
+  getProductByIdOrSlug,
+  getRelatedProducts,
+  type Artwork,
+  type ShopProduct,
+} from "@/lib/supabase/queries"
 import { ProductDetail } from "./product-detail"
 import type { Metadata } from "next"
 
@@ -28,14 +33,11 @@ export type UnifiedProduct = {
 }
 
 async function getProduct(id: string): Promise<UnifiedProduct | null> {
-  const [artworks, shopProducts] = await Promise.all([
-    getArtworks(),
-    getShopProducts(),
-  ])
+  const item = await getProductByIdOrSlug(id)
+  if (!item) return null
 
-  // Check artworks first (match by uuid or by slug for legacy ids)
-  const artwork = artworks.find((a) => a.id === id || a.slug === id)
-  if (artwork) {
+  if ("artist" in item) {
+    const artwork = item as Artwork
     return {
       id: artwork.id,
       title: artwork.title,
@@ -56,9 +58,51 @@ async function getProduct(id: string): Promise<UnifiedProduct | null> {
     }
   }
 
-  // Check shop products
-  const shopProduct = shopProducts.find((p) => p.id === id || p.slug === id)
-  if (shopProduct) {
+  const shopProduct = item as ShopProduct
+  return {
+    id: shopProduct.id,
+    title: shopProduct.title,
+    image: shopProduct.image,
+    price: shopProduct.price,
+    originalPrice: shopProduct.originalPrice,
+    category: shopProduct.category,
+    discountPercent: shopProduct.discountPercent,
+    description:
+      shopProduct.description ||
+      `Handcrafted ${shopProduct.category.toLowerCase()} piece made with care and traditional techniques.`,
+    sizes: ["Standard"],
+    sizePricing: shopProduct.sizePricing,
+    badge: shopProduct.badge,
+  }
+}
+
+async function getRelated(product: UnifiedProduct): Promise<UnifiedProduct[]> {
+  const items = await getRelatedProducts(product.category, product.id, 3)
+
+  return items.map((item) => {
+    if ("artist" in item) {
+      const artwork = item as Artwork
+      return {
+        id: artwork.id,
+        title: artwork.title,
+        image: artwork.image,
+        price: artwork.price,
+        originalPrice: artwork.originalPrice,
+        category: artwork.category,
+        discountPercent: artwork.originalPrice
+          ? Math.round((1 - artwork.price / artwork.originalPrice) * 100)
+          : undefined,
+        description: artwork.description,
+        artist: artwork.artist,
+        dimensions: artwork.dimensions,
+        shippingStatus: artwork.shippingStatus,
+        sizes: artwork.sizes,
+        sizePricing: artwork.sizePricing,
+        badge: artwork.badge,
+      }
+    }
+
+    const shopProduct = item as ShopProduct
     return {
       id: shopProduct.id,
       title: shopProduct.title,
@@ -67,63 +111,14 @@ async function getProduct(id: string): Promise<UnifiedProduct | null> {
       originalPrice: shopProduct.originalPrice,
       category: shopProduct.category,
       discountPercent: shopProduct.discountPercent,
-      description: `Handcrafted ${shopProduct.category.toLowerCase()} piece made with care and traditional techniques.`,
+      description:
+        shopProduct.description ||
+        `Handcrafted ${shopProduct.category.toLowerCase()} piece.`,
       sizes: ["Standard"],
       sizePricing: shopProduct.sizePricing,
       badge: shopProduct.badge,
     }
-  }
-
-  return null
-}
-
-async function getRelated(product: UnifiedProduct): Promise<UnifiedProduct[]> {
-  const [artworks, shopProducts] = await Promise.all([
-    getArtworks(),
-    getShopProducts(),
-  ])
-
-  const artworkRelated = artworks
-    .filter((a) => a.id !== product.id && a.category === product.category)
-    .slice(0, 3)
-    .map((a) => ({
-      id: a.id,
-      title: a.title,
-      image: a.image,
-      price: a.price,
-      originalPrice: a.originalPrice,
-      category: a.category,
-      discountPercent: a.originalPrice
-        ? Math.round((1 - a.price / a.originalPrice) * 100)
-        : undefined,
-      description: a.description,
-      artist: a.artist,
-      dimensions: a.dimensions,
-      shippingStatus: a.shippingStatus,
-      sizes: a.sizes,
-      sizePricing: a.sizePricing,
-    }))
-
-  if (artworkRelated.length >= 3) return artworkRelated
-
-  // Fill with shop products if not enough artworks
-  const shopRelated = shopProducts
-    .filter((p) => p.id !== product.id && p.category === product.category)
-    .slice(0, 3 - artworkRelated.length)
-    .map((p) => ({
-      id: p.id,
-      title: p.title,
-      image: p.image,
-      price: p.price,
-      originalPrice: p.originalPrice,
-      category: p.category,
-      discountPercent: p.discountPercent,
-      description: `Handcrafted ${p.category.toLowerCase()} piece.`,
-      sizes: ["Standard"] as string[],
-      sizePricing: p.sizePricing,
-    }))
-
-  return [...artworkRelated, ...shopRelated].slice(0, 3)
+  })
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

@@ -76,7 +76,14 @@ export function ShopView({
     }
 
     return products
-  }, [selectedCategories, selectedPriceRanges, sortBy, searchQuery, initialProducts])
+  }, [
+    selectedCategories,
+    selectedPriceRanges,
+    sortBy,
+    searchQuery,
+    initialProducts,
+    priceRanges,
+  ])
 
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)
   const paginatedProducts = filteredProducts.slice(

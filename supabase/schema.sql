@@ -77,7 +77,8 @@ insert into categories (name, slug, sort_order) values
   ('Copper Bottle',           'copper-bottle',          7),
   ('Water Bottle',            'water-bottle',           8),
   ('Hanging Florals',         'hanging-florals',        9),
-  ('Botanical',               'botanical',              10);
+  ('Botanical',               'botanical',              10)
+on conflict (slug) do nothing;
 
 -- ─────────────────────────────────────────────
 -- PRODUCTS
@@ -251,7 +252,7 @@ alter table coupons    enable row level security;
 
 -- Helper: check if current user is admin
 create or replace function is_admin()
-returns boolean language sql security definer as $$
+returns boolean language sql security definer set search_path = public as $$
   select exists (
     select 1 from profiles
     where id = auth.uid() and role = 'admin'
@@ -280,7 +281,7 @@ create policy "orders: admin all"  on orders for all    using (is_admin());
 create policy "order_items: read via order" on order_items for select
   using (exists (select 1 from orders where orders.id = order_items.order_id and (orders.user_id = auth.uid() or is_admin())));
 create policy "order_items: insert via order" on order_items for insert
-  with check (exists (select 1 from orders where orders.id = order_items.order_id and (orders.user_id = auth.uid() or user_id is null or is_admin())));
+  with check (exists (select 1 from orders where orders.id = order_items.order_id and (orders.user_id = auth.uid() or orders.user_id is null or is_admin())));
 
 -- reviews: published reviews are public; own draft readable; admin all
 create policy "reviews: public read"  on reviews for select using (is_published = true or auth.uid() = user_id or is_admin());

@@ -304,16 +304,16 @@ export async function getPriceRanges(): Promise<PriceRange[]> {
   const prices = (data as { price: number }[] ?? []).map((r) => Number(r.price));
 
   const buckets: Array<{ label: string; min: number; max: number | null }> = [
-    { label: "Rs.0.00 - Rs.999.99",       min: 0,     max: 999.99  },
-    { label: "Rs.1,000 - Rs.1,999.99",    min: 1000,  max: 1999.99 },
-    { label: "Rs.2,000 - Rs.2,999.99",    min: 2000,  max: 2999.99 },
-    { label: "Rs.3,000 - Rs.3,999.99",    min: 3000,  max: 3999.99 },
-    { label: "Rs.4,000 - Rs.4,999.99",    min: 4000,  max: 4999.99 },
-    { label: "Rs.5,000 - Rs.5,999.99",    min: 5000,  max: 5999.99 },
-    { label: "Rs.6,000 - Rs.6,999.99",    min: 6000,  max: 6999.99 },
-    { label: "Rs.7,000 - Rs.7,999.99",    min: 7000,  max: 7999.99 },
-    { label: "Rs.8,000 - Rs.8,999.99",    min: 8000,  max: 8999.99 },
-    { label: "Rs.21,000 and above",        min: 21000, max: null     },
+    { label: "₹0.00 - ₹999.99",       min: 0,     max: 999.99  },
+    { label: "₹1,000 - ₹1,999.99",    min: 1000,  max: 1999.99 },
+    { label: "₹2,000 - ₹2,999.99",    min: 2000,  max: 2999.99 },
+    { label: "₹3,000 - ₹3,999.99",    min: 3000,  max: 3999.99 },
+    { label: "₹4,000 - ₹4,999.99",    min: 4000,  max: 4999.99 },
+    { label: "₹5,000 - ₹5,999.99",    min: 5000,  max: 5999.99 },
+    { label: "₹6,000 - ₹6,999.99",    min: 6000,  max: 6999.99 },
+    { label: "₹7,000 - ₹7,999.99",    min: 7000,  max: 7999.99 },
+    { label: "₹8,000 - ₹8,999.99",    min: 8000,  max: 8999.99 },
+    { label: "₹21,000 and above",     min: 21000, max: null     },
   ];
 
   return buckets
@@ -324,6 +324,62 @@ export async function getPriceRanges(): Promise<PriceRange[]> {
       ).length,
     }))
     .filter((b) => b.count > 0);
+}
+
+/**
+ * Fetch a single product (artwork or shop product) targeted by id or slug.
+ */
+export async function getProductByIdOrSlug(
+  idOrSlug: string
+): Promise<Artwork | ShopProduct | null> {
+  const supabase = await createClient();
+  const isUuid =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+      idOrSlug
+    );
+
+  let query = supabase.from("products").select("*").eq("is_active", true);
+  if (isUuid) {
+    query = query.or(`id.eq.${idOrSlug},slug.eq.${idOrSlug}`);
+  } else {
+    query = query.eq("slug", idOrSlug);
+  }
+
+  const { data, error } = await query.maybeSingle();
+  if (error) {
+    console.error("[getProductByIdOrSlug]", error.message);
+    return null;
+  }
+  if (!data) return null;
+
+  return data.type === "artwork" ? rowToArtwork(data) : rowToShopProduct(data);
+}
+
+/**
+ * Fetch related products sharing the same category.
+ */
+export async function getRelatedProducts(
+  category: string,
+  excludeId: string,
+  limit = 3
+): Promise<(Artwork | ShopProduct)[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("is_active", true)
+    .eq("category", category)
+    .neq("id", excludeId)
+    .limit(limit);
+
+  if (error) {
+    console.error("[getRelatedProducts]", error.message);
+    return [];
+  }
+
+  return (data ?? []).map((row) =>
+    row.type === "artwork" ? rowToArtwork(row) : rowToShopProduct(row)
+  );
 }
 
 // ─── Sort options (static, no DB needed) ─────────────────────────────────────

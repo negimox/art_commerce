@@ -211,6 +211,8 @@ export type Database = {
       payment_status: "pending" | "paid" | "failed" | "refunded";
       product_type: "artwork" | "shop_product";
       user_role: "customer" | "admin";
+      shipping_status_type: "Made To Order" | "Ready to Ship";
+      discount_type: "percentage" | "fixed";
     };
   };
 };
