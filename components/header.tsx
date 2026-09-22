@@ -126,21 +126,21 @@ export function Header() {
           <nav className="hidden md:flex items-center gap-6 lg:gap-8">
             <Link
               href="/shop"
-              className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
+              className={`text-[16px] font-[600] transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
             >
               Shop
             </Link>
             <Link
               href="/about"
-              className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
+              className={`text-[16px] font-[600] transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
             >
               About
             </Link>
             <Link
               href="/contact"
-              className={`text-sm transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
+              className={`text-[16px] font-[600] transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
             >
               Contact
@@ -171,7 +171,7 @@ export function Header() {
           >
             <Link
               href="/shop"
-              className={`transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
+              className={`font-[700] transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
               onClick={() => setIsOpen(false)}
             >
@@ -179,7 +179,7 @@ export function Header() {
             </Link>
             <Link
               href="/about"
-              className={`transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
+              className={`font-[700] transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
               onClick={() => setIsOpen(false)}
             >
@@ -187,7 +187,7 @@ export function Header() {
             </Link>
             <Link
               href="/contact"
-              className={`transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
+              className={`font-[700] transition-colors cursor-pointer ${isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
                 }`}
               onClick={() => setIsOpen(false)}
             >
